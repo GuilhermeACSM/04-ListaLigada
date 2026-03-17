@@ -73,7 +73,7 @@ void menu()
 void inicializar()
 {
 
-	// se a lista j� possuir elementos
+	// se a lista j� possuir elementos
 	// libera a memoria ocupada
 	NO* aux = primeiro;
 	while (aux != NULL) {
@@ -124,8 +124,16 @@ void inserirElemento()
 		return;
 	}
 
+	int valor;
 	cout << "Digite o elemento: ";
-	cin >> novo->valor;
+	cin >> valor;
+
+	if(posicaoElemento(valor) != NULL) {
+		cout << "Esse elemento já existe!" << endl;
+		return;
+	}
+
+	novo->valor = valor;
 	novo->prox = NULL;
 
 	if (primeiro == NULL)
@@ -145,18 +153,47 @@ void inserirElemento()
 
 void excluirElemento()
 {
-	
+	int valor;
+	cout << "Digite o elemento: ";
+	cin >> valor;
+
+	NO* paraExcluir = posicaoElemento(valor);
+	if (paraExcluir == NULL) {
+		cout << "Elemento não encontrado!" << endl;
+		return;
+	}
+
+	if (paraExcluir == primeiro) {
+		primeiro = primeiro->prox;
+		free(paraExcluir);
+	} else {
+		NO* anterior = primeiro;
+		while (anterior->prox != paraExcluir) {
+			anterior = anterior->prox;
+		}
+		anterior->prox = paraExcluir->prox;
+		free(paraExcluir);
+	}
 }
 
 void buscarElemento()
 {
-	
+	int valor;
+	cout << "Digite o elemento: ";
+	cin >> valor;
+
+	if (posicaoElemento(valor) != NULL) {
+		cout << "Encontrado!" << endl;
+	}
+	else {
+		cout << "Número não encontrado!" << endl;
+	}
 }
 
 
 
 // retorna um ponteiro para o elemento buscado
-// ou NULL se o elemento n�o estiver na lista
+// ou NULL se o elemento n�o estiver na lista
 NO* posicaoElemento(int numero)
 {
 	NO* aux = primeiro;
